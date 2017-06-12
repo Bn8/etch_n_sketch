@@ -35,12 +35,19 @@ body {
 }
 
 
-.paint_options_list a {
+.top_button {
+	cursor:default; /* dont change cursor when interacting */
 	color:#ddd;
+	background-color:#222;
     display: inline-block;
     padding: 6px;
 	margin-right:10;
 	text-decoration: none;
+	
+}
+
+.top_button:hover {
+	text-decoration: underline;
 }
 
 .highlighted {
@@ -48,9 +55,6 @@ body {
 	
 }
 
-.paint_options_list a:hover {
-	text-decoration: underline;
-}
 
 /*********************************/
 
@@ -80,11 +84,16 @@ body {
 }
 
 
+td, tr {
+	padding: 0 0 0 0;
+}
+
 .square {
 	display: inline-block;
 	width: 1em;
 	height: 1em;
-	border: solid #6AC5AC 1px;
+	background-color: green;
+	/* border: solid #6AC5AC 1px; */
 }
 
 
