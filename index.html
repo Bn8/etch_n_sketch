@@ -1,6 +1,8 @@
+<!DOCTYPE="html">
 
 <html>
 <head>
+	<meta charset="utf-8"/>
 	<link rel="stylesheet" href="assets/style-main.css">
 </head>
 
@@ -9,8 +11,17 @@
 <div class="header">
 	 <ul class="paint_options_list">
 		<li><div class='top_button'  id='create_pad'>Create Pad</div></li>
-		<li><div class='top_button'  id='pen_option'>Pen Option</div></li>
+		<li>
+			<div class='dropdown'>				
+				<div class='top_button'>Pen Option</div>
+				<div class='dropdown-content'  id='pen_option'></div> <!-- will be filled with divs options from jquery -->
+			</div>
+		</li>
 		<li><input type="text" value="hi" style="display:none"></li>
+		<li class="li_align_right">
+			<div id='toggle_indicator'></div>
+			<div class='top_text'>toggle painting on hover key: 'T'</div>
+		</li>
 	</ul> 
 </div>
 
