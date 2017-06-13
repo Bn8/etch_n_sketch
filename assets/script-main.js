@@ -9,9 +9,11 @@ const SQUARE_BORDER_ON = "1px solid rgba(0, 255, 0, 0.1)"
 const SQUARE_BORDER_OFF = "0px solid rgba(0, 255, 0, 0.1)"
 
 var pen_options = ["Constant", "Rainbow", "Gradient"];
-var pen_type = undefined;
+var pen_type = pen_options[0]; // default to constant
+
 var pen_paint_on = true;
 var is_square_border_on = false;
+var is_opacity_on = false;
 
 function randInt(n) {
 	return Math.floor(Math.random() * n);
@@ -62,10 +64,16 @@ function initTableHover() {
 			return;
 		}
 		
-		var pen_color = getPenColor($(this));
-		if(pen_color != undefined) {
+		var opacity = 1;
+		if(is_opacity_on) {
+			opacity = $(this).css("opacity")-0.1;
+		}
+		else {
+			var pen_color = getPenColor($(this));
 			$(this).css('background-color', pen_color);
 		}
+		
+		$(this).css("opacity", opacity);
 		
 	});
 }
@@ -75,12 +83,11 @@ function getPenColor(square) {
 	switch(pen_type) {
 		case "Rainbow":
 			return randColor();
-		case "Gradient":
-			square.css("opacity", square.css("opacity")-0.1);
-			return undefined;
 		case "Constant":
-		default:
 			return CONST_PEN_COLOR;
+		case "Gradient":
+		default:
+			return undefined;
 	}
 }
 
@@ -118,6 +125,7 @@ jQuery(document).ready(function() {
 	// pen options functionality
 	dom_pen_option.on('click', 'div', function() {
 		pen_type = $(this).text();
+		is_opacity_on = (pen_type == "Gradient" ? true : false);
 	});
 	
 	// toggle borders buttons
