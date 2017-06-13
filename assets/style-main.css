@@ -89,27 +89,22 @@ body {
 	margin:auto;
 	display:block; 
 	clear: both;
-	width:35%;
-	text-align:center; /* needed even for IMG to be perfectly aligned. ikr? */
-
+	text-align:center;
 }
 
 #logo{
 	padding-top:20px;
-	width:90%;
+	width:50%;
 }
 
-
-td, tr {
-	padding: 0 0 0 0;
+#matrix {
+	display:inline-block;
 }
+
 
 .square {
 	display: inline-block;
-	width: 1em;
-	height: 1em;
 	background-color: green;
-	border: 1px solid rgba(0, 255, 0, 0.1);
 }
 
 

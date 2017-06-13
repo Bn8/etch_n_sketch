@@ -1,8 +1,17 @@
 const CONST_PEN_COLOR = "#fff";
+const MATRIX_CELLSPACING = 0;
+const MATRIX_CELLPADDING = 0;
+const MATRIX_SIZE_NUM = 540;
+const MATRIX_SIZE_PX = MATRIX_SIZE_NUM + 'px';
+const MATRIX_DEFAULT_DIMENSION = 20;
+const SQUARE_CLASS_NAME = "square";
+const SQUARE_BORDER_ON = "1px solid rgba(0, 255, 0, 0.1)"
+const SQUARE_BORDER_OFF = "0px solid rgba(0, 255, 0, 0.1)"
 
 var pen_options = ["Constant", "Rainbow", "Gradient"];
 var pen_type = undefined;
 var pen_paint_on = true;
+var is_square_border_on = false;
 
 function randInt(n) {
 	return Math.floor(Math.random() * n);
@@ -12,17 +21,23 @@ function randColor() {
 	return "rgb("+randInt(255)+","+randInt(255)+","+randInt(255)+")";
 }
 
-function initTable(matrix, size) {
-	var table = $('<table cellspacing="0" cellpadding="0"></table>');
+function initTable(matrix, dim) {
+	// create table with no spaces between rows and columns
+	var table = $('<table></table>');
+	table.attr('cellspacing',MATRIX_CELLSPACING);
+	table.attr('cellpadding',MATRIX_CELLPADDING);
 	var tr = $('<tr></tr>');
 	var td = $('<td></td>');
-	var square = $(`<div class='square'></div>`);
+	var square = $('<div></div>');
+	square.attr('class',SQUARE_CLASS_NAME);	
+	square.css('width',MATRIX_SIZE_NUM/dim + 'px');
+	square.css('height',MATRIX_SIZE_NUM/dim + 'px');
 	td.append(square);
 	
-	for(var i=0; i<size; i++) {
+	for(var i=0; i<dim; i++) {
 		tr.append(td.clone()); // need to clone because otherwise it'll remove the previous DOM element we created when using append
 	}
-	for(var i=0; i<size; i++) {
+	for(var i=0; i<dim; i++) {
 		table.append(tr.clone());
 	}
 	
@@ -31,6 +46,14 @@ function initTable(matrix, size) {
 	initTableHover();
 }
 
+
+function resetMatrix(dim) {
+	var matrix = $('#matrix');	
+	matrix.find('table').remove();
+	matrix.attr('width',MATRIX_SIZE_PX);
+	matrix.attr('height',MATRIX_SIZE_PX);
+	initTable(matrix, dim);
+}
 
 function initTableHover() {
 	// highlight squares
@@ -61,6 +84,7 @@ function getPenColor(square) {
 	}
 }
 
+// add highlight effect for selected dom objects (like dropdown)
 function addHoverHighlightEffect(dom_obj) {
 	dom_obj.on('mouseenter', function() {
 		$(this).addClass('highlighted');
@@ -70,19 +94,18 @@ function addHoverHighlightEffect(dom_obj) {
 	});
 }
 
+// "main" if u will
 jQuery(document).ready(function() {
-	// 
+	// make buttons highlight when hovering them
 	addHoverHighlightEffect($('.top_button'));
 	
-	//
-	initTableHover();
+	// default matrix
+	resetMatrix(MATRIX_DEFAULT_DIMENSION);
 	
-	// make squares
-	$('#create_pad').on('click', function() {
-		var matrix = $('#matrix');
-		matrix.find('table').remove();
-		initTable(matrix, 30);
-		
+	// reset the matrix
+	$('#reset_pad').on('click', function() {
+		var dim = Number(prompt("Please enter matrix dimension(1-100):", ""+MATRIX_DEFAULT_DIMENSION)); // more at their own risk! but im allowing it for fun
+		resetMatrix(dim);
 	});
 	
 	// pen options initialize
@@ -96,6 +119,13 @@ jQuery(document).ready(function() {
 	dom_pen_option.on('click', 'div', function() {
 		pen_type = $(this).text();
 	});
+	
+	// toggle borders buttons
+	$("#btoggle_square_border").on('click', function(){
+		var squares_dom = $("."+SQUARE_CLASS_NAME);
+		squares_dom.css("border", is_square_border_on ? SQUARE_BORDER_OFF : SQUARE_BORDER_ON);
+		is_square_border_on = !is_square_border_on;
+	} );
 	
 	// keypress
 	$('body').on('keypress', function(event) {
